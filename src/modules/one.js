@@ -6,7 +6,7 @@
 
 const oneModule = function () {
   console.log('one.js');
-  let dataRecievied;
+  // let dataRecievied;
 
   const getData = (source = 'dbHeroes.json') => {
     return fetch(source)
