@@ -4,150 +4,62 @@
 
 'strict';
 
-// import * as THREE from 'https://unpkg.com/three/build/three.module.js';
-// import * as THREE from 'https://cdn.skypack.dev/three@0.136.1/build/three.module.js';
+const twoModule = (cardsNumber) => {
+  // Create a new container for the card
+  const container = document.createElement('div');
+  container.classList.add('card-container');
+  let isCard = cardsNumber;
+  if (isCard === 1) container.style.left += `${20}%`;
+  if (isCard === 2) container.style.left += `${50}%`;
+  if (isCard === 3) container.style.left += `${80}%`;
 
-const twoModule = () => {
-  let scene;
-  let camera;
-  let renderer;
-  let cloudParticles = [];
-  let rainParticles = [];
-  let flash;
-  let rain;
-  let rainGeo;
-  let rainCount = 15000;
-  let ambient;
-  let directionalLight;
-  let rainDrop;
-  let rainMaterial;
-  let cloudGeo;
-  let cloudMaterial;
-/*
-  function init () {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(
-      60,
-      window.innerWidth / window.innerHeight,
-      1,
-      1000
-    );
-    camera.position.z = 1;
-    camera.rotation.x = 1.16;
-    camera.rotation.y = -0.12;
-    camera.rotation.z = 0.27;
+  // Create the card and its faces
+  const card = document.createElement('div');
+  card.classList.add('card');
+  container.appendChild(card);
 
-    ambient = new THREE.AmbientLight(0x555555);
-    scene.add(ambient);
+  const cardFront = document.createElement('div');
+  cardFront.classList.add('card-front');
+  card.appendChild(cardFront);
 
-    directionalLight = new THREE.DirectionalLight(0xffeedd);
-    directionalLight.position.set(0, 0, 1);
-    scene.add(directionalLight);
+  const bannerImage = document.createElement('div');
+  bannerImage.classList.add('banner-image');
+  cardFront.appendChild(bannerImage);
 
-    flash = new THREE.PointLight(0x062d89, 30, 500, 1.7);
-    flash.position.set(200, 300, 100);
-    scene.add(flash);
+  const h1 = document.createElement('h1');
+  h1.textContent = 'Your Title Here';
+  cardFront.appendChild(h1);
 
-    renderer = new THREE.WebGLRenderer();
+  const p = document.createElement('p');
+  p.textContent = 'Your content here';
+  cardFront.appendChild(p);
 
-    scene.fog = new THREE.FogExp2(0x11111f, 0.002);
-    renderer.setClearColor(scene.fog.color);
+  const cardBack = document.createElement('div');
+  cardBack.classList.add('card-back');
+  card.appendChild(cardBack);
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+  const cardBackContent = document.createElement('div');
+  cardBackContent.classList.add('card-back-content');
+  cardBack.appendChild(cardBackContent);
 
-    let positions = [];
-    let sizes = [];
-    rainGeo = new THREE.BufferGeometry();
-    for (let i = 0; i < rainCount; i++) {
-      rainDrop = new THREE.Vector3(
-        Math.random() * 400 - 200,
-        Math.random() * 500 - 250,
-        Math.random() * 400 - 200
-      );
-      positions.push(Math.random() * 400 - 200);
-      positions.push(Math.random() * 500 - 250);
-      positions.push(Math.random() * 400 - 200);
-      sizes.push(30);
-    }
-    rainGeo.setAttribute(
-      'position',
-      new THREE.BufferAttribute(new Float32Array(positions), 3)
-    );
-    rainGeo.setAttribute(
-      'size',
-      new THREE.BufferAttribute(new Float32Array(sizes), 1)
-    );
-    rainMaterial = new THREE.PointsMaterial({
-      color: 0xaaaaaa,
-      size: 0.1,
-      transparent: true
-    });
-    rain = new THREE.Points(rainGeo, rainMaterial);
-    scene.add(rain);
+  const h1Gender = document.createElement('h1');
+  h1Gender.textContent = 'Gender';
+  cardBackContent.appendChild(h1Gender);
 
-    let loader = new THREE.TextureLoader();
-    loader.load(
-      'https://static.vecteezy.com/system/resources/previews/010/884/548/original/dense-fluffy-puffs-of-white-smoke-and-fog-on-transparent-background-abstract-smoke-clouds-movement-blurred-out-of-focus-smoking-blows-from-machine-dry-ice-fly-fluttering-in-air-effect-texture-png.png',
-      function (texture) {
-        cloudGeo = new THREE.PlaneBufferGeometry(500, 500);
-        cloudMaterial = new THREE.MeshLambertMaterial({
-          map: texture,
-          transparent: true
-        });
+  const pGender = document.createElement('p');
+  pGender.textContent = 'Male';
+  cardBackContent.appendChild(pGender);
 
-        for (let p = 0; p < 25; p++) {
-          let cloud = new THREE.Mesh(cloudGeo, cloudMaterial);
-          cloud.position.set(
-            Math.random() * 800 - 400,
-            500,
-            Math.random() * 500 - 450
-          );
-          cloud.rotation.x = 1.16;
-          cloud.rotation.y = -0.12;
-          cloud.rotation.z = Math.random() * 360;
-          cloud.material.opacity = 0.6;
-          cloudParticles.push(cloud);
-          scene.add(cloud);
-        }
-        animate();
-        window.addEventListener('resize', onWindowResize);
-      }
-    );
-  }
-  function animate () {
-    cloudParticles.forEach((p) => {
-      p.rotation.z -= 0.002;
-    });
-    rainGeo.attributes.size.array.forEach((r, i) => {
-      r += 0.3;
-    });
-    const time = Date.now() * 0.005;
+  const h1DateOfBirth = document.createElement('h1');
+  h1DateOfBirth.textContent = 'Date of Birth';
+  cardBackContent.appendChild(h1DateOfBirth);
 
-    rainGeo.verticesNeedUpdate = true;
+  const pDateOfBirth = document.createElement('p');
+  pDateOfBirth.textContent = '01/01/2000';
+  cardBackContent.appendChild(pDateOfBirth);
 
-    rain.position.z -= 0.222;
-    if (rain.position.z < -200) {
-      rain.position.z = 0;
-    }
-
-    if (Math.random() > 0.93 || flash.power > 100) {
-      if (flash.power < 100) { flash.position.set(Math.random() * 400, 300 + Math.random() * 200, 100); }
-      flash.power = 50 + Math.random() * 500;
-    }
-    renderer.render(scene, camera);
-    requestAnimationFrame(animate);
-  }
-
-  init();
-
-  function onWindowResize () {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-  */
+  // Append the container to the document body
+  document.body.appendChild(container);
 }
 
 export default twoModule;

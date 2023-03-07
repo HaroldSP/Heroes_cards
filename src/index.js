@@ -27,4 +27,6 @@ import oneModule from './modules/one.js';
 import twoModule from './modules/two.js';
 
 oneModule();
-twoModule();
+twoModule(1);
+twoModule(2);
+twoModule(3);
